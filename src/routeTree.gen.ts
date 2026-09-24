@@ -16,6 +16,9 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SetupRouteImport } from './routes/setup'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminBuildingsIndexRouteImport } from './routes/admin.buildings.index'
+import { Route as AdminBuildingsNewRouteImport } from './routes/admin.buildings.new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,34 +55,57 @@ const SetupRoute = SetupRouteImport.update({
   path: '/setup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBuildingsIndexRoute = AdminBuildingsIndexRouteImport.update({
+  id: '/buildings/',
+  path: '/buildings/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBuildingsNewRoute = AdminBuildingsNewRouteImport.update({
+  id: '/buildings/new',
+  path: '/buildings/new',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setup': typeof SetupRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/buildings/new': typeof AdminBuildingsNewRoute
+  '/admin/buildings/': typeof AdminBuildingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setup': typeof SetupRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/buildings/new': typeof AdminBuildingsNewRoute
+  '/admin/buildings': typeof AdminBuildingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setup': typeof SetupRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/buildings/new': typeof AdminBuildingsNewRoute
+  '/admin/buildings/': typeof AdminBuildingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,15 +117,20 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setup'
+    | '/admin/'
+    | '/admin/buildings/new'
+    | '/admin/buildings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/setup'
+    | '/admin'
+    | '/admin/buildings/new'
+    | '/admin/buildings'
   id:
     | '__root__'
     | '/'
@@ -109,11 +140,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setup'
+    | '/admin/'
+    | '/admin/buildings/new'
+    | '/admin/buildings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -172,12 +206,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SetupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/buildings/': {
+      id: '/admin/buildings/'
+      path: '/buildings'
+      fullPath: '/admin/buildings/'
+      preLoaderRoute: typeof AdminBuildingsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/buildings/new': {
+      id: '/admin/buildings/new'
+      path: '/buildings/new'
+      fullPath: '/admin/buildings/new'
+      preLoaderRoute: typeof AdminBuildingsNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminBuildingsNewRoute: typeof AdminBuildingsNewRoute
+  AdminBuildingsIndexRoute: typeof AdminBuildingsIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+  AdminBuildingsNewRoute: AdminBuildingsNewRoute,
+  AdminBuildingsIndexRoute: AdminBuildingsIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
