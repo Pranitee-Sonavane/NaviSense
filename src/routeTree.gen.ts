@@ -21,6 +21,9 @@ import { Route as AdminBuildingsIndexRouteImport } from './routes/admin.building
 import { Route as AdminBuildingsNewRouteImport } from './routes/admin.buildings.new'
 import { Route as AdminBuildingsBuildingIdIndexRouteImport } from './routes/admin.buildings.$buildingId.index'
 import { Route as AdminBuildingsBuildingIdFloorsNewRouteImport } from './routes/admin.buildings.$buildingId.floors.new'
+import { Route as AdminBuildingsBuildingIdFloorsFloorIdIndexRouteImport } from './routes/admin.buildings.$buildingId.floors.$floorId.index'
+import { Route as AdminBuildingsBuildingIdFloorsFloorIdProcessingRouteImport } from './routes/admin.buildings.$buildingId.floors.$floorId.processing'
+import { Route as AdminBuildingsBuildingIdFloorsFloorIdUploadRouteImport } from './routes/admin.buildings.$buildingId.floors.$floorId.upload'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -84,6 +87,24 @@ const AdminBuildingsBuildingIdFloorsNewRoute =
     path: '/buildings/$buildingId/floors/new',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminBuildingsBuildingIdFloorsFloorIdIndexRoute =
+  AdminBuildingsBuildingIdFloorsFloorIdIndexRouteImport.update({
+    id: '/buildings/$buildingId/floors/$floorId/',
+    path: '/buildings/$buildingId/floors/$floorId/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute =
+  AdminBuildingsBuildingIdFloorsFloorIdProcessingRouteImport.update({
+    id: '/buildings/$buildingId/floors/$floorId/processing',
+    path: '/buildings/$buildingId/floors/$floorId/processing',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminBuildingsBuildingIdFloorsFloorIdUploadRoute =
+  AdminBuildingsBuildingIdFloorsFloorIdUploadRouteImport.update({
+    id: '/buildings/$buildingId/floors/$floorId/upload',
+    path: '/buildings/$buildingId/floors/$floorId/upload',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -98,6 +119,9 @@ export interface FileRoutesByFullPath {
   '/admin/buildings/': typeof AdminBuildingsIndexRoute
   '/admin/buildings/$buildingId/': typeof AdminBuildingsBuildingIdIndexRoute
   '/admin/buildings/$buildingId/floors/new': typeof AdminBuildingsBuildingIdFloorsNewRoute
+  '/admin/buildings/$buildingId/floors/$floorId/processing': typeof AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute
+  '/admin/buildings/$buildingId/floors/$floorId/upload': typeof AdminBuildingsBuildingIdFloorsFloorIdUploadRoute
+  '/admin/buildings/$buildingId/floors/$floorId/': typeof AdminBuildingsBuildingIdFloorsFloorIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -111,6 +135,9 @@ export interface FileRoutesByTo {
   '/admin/buildings': typeof AdminBuildingsIndexRoute
   '/admin/buildings/$buildingId': typeof AdminBuildingsBuildingIdIndexRoute
   '/admin/buildings/$buildingId/floors/new': typeof AdminBuildingsBuildingIdFloorsNewRoute
+  '/admin/buildings/$buildingId/floors/$floorId/processing': typeof AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute
+  '/admin/buildings/$buildingId/floors/$floorId/upload': typeof AdminBuildingsBuildingIdFloorsFloorIdUploadRoute
+  '/admin/buildings/$buildingId/floors/$floorId': typeof AdminBuildingsBuildingIdFloorsFloorIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -126,6 +153,9 @@ export interface FileRoutesById {
   '/admin/buildings/': typeof AdminBuildingsIndexRoute
   '/admin/buildings/$buildingId/': typeof AdminBuildingsBuildingIdIndexRoute
   '/admin/buildings/$buildingId/floors/new': typeof AdminBuildingsBuildingIdFloorsNewRoute
+  '/admin/buildings/$buildingId/floors/$floorId/processing': typeof AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute
+  '/admin/buildings/$buildingId/floors/$floorId/upload': typeof AdminBuildingsBuildingIdFloorsFloorIdUploadRoute
+  '/admin/buildings/$buildingId/floors/$floorId/': typeof AdminBuildingsBuildingIdFloorsFloorIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -142,6 +172,9 @@ export interface FileRouteTypes {
     | '/admin/buildings/'
     | '/admin/buildings/$buildingId/'
     | '/admin/buildings/$buildingId/floors/new'
+    | '/admin/buildings/$buildingId/floors/$floorId/processing'
+    | '/admin/buildings/$buildingId/floors/$floorId/upload'
+    | '/admin/buildings/$buildingId/floors/$floorId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -155,6 +188,9 @@ export interface FileRouteTypes {
     | '/admin/buildings'
     | '/admin/buildings/$buildingId'
     | '/admin/buildings/$buildingId/floors/new'
+    | '/admin/buildings/$buildingId/floors/$floorId/processing'
+    | '/admin/buildings/$buildingId/floors/$floorId/upload'
+    | '/admin/buildings/$buildingId/floors/$floorId'
   id:
     | '__root__'
     | '/'
@@ -169,6 +205,9 @@ export interface FileRouteTypes {
     | '/admin/buildings/'
     | '/admin/buildings/$buildingId/'
     | '/admin/buildings/$buildingId/floors/new'
+    | '/admin/buildings/$buildingId/floors/$floorId/processing'
+    | '/admin/buildings/$buildingId/floors/$floorId/upload'
+    | '/admin/buildings/$buildingId/floors/$floorId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -267,6 +306,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBuildingsBuildingIdFloorsNewRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/buildings/$buildingId/floors/$floorId/': {
+      id: '/admin/buildings/$buildingId/floors/$floorId/'
+      path: '/buildings/$buildingId/floors/$floorId'
+      fullPath: '/admin/buildings/$buildingId/floors/$floorId/'
+      preLoaderRoute: typeof AdminBuildingsBuildingIdFloorsFloorIdIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/buildings/$buildingId/floors/$floorId/processing': {
+      id: '/admin/buildings/$buildingId/floors/$floorId/processing'
+      path: '/buildings/$buildingId/floors/$floorId/processing'
+      fullPath: '/admin/buildings/$buildingId/floors/$floorId/processing'
+      preLoaderRoute: typeof AdminBuildingsBuildingIdFloorsFloorIdProcessingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/buildings/$buildingId/floors/$floorId/upload': {
+      id: '/admin/buildings/$buildingId/floors/$floorId/upload'
+      path: '/buildings/$buildingId/floors/$floorId/upload'
+      fullPath: '/admin/buildings/$buildingId/floors/$floorId/upload'
+      preLoaderRoute: typeof AdminBuildingsBuildingIdFloorsFloorIdUploadRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -276,6 +336,9 @@ interface AdminRouteChildren {
   AdminBuildingsIndexRoute: typeof AdminBuildingsIndexRoute
   AdminBuildingsBuildingIdIndexRoute: typeof AdminBuildingsBuildingIdIndexRoute
   AdminBuildingsBuildingIdFloorsNewRoute: typeof AdminBuildingsBuildingIdFloorsNewRoute
+  AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute: typeof AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute
+  AdminBuildingsBuildingIdFloorsFloorIdUploadRoute: typeof AdminBuildingsBuildingIdFloorsFloorIdUploadRoute
+  AdminBuildingsBuildingIdFloorsFloorIdIndexRoute: typeof AdminBuildingsBuildingIdFloorsFloorIdIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -285,6 +348,12 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminBuildingsBuildingIdIndexRoute: AdminBuildingsBuildingIdIndexRoute,
   AdminBuildingsBuildingIdFloorsNewRoute:
     AdminBuildingsBuildingIdFloorsNewRoute,
+  AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute:
+    AdminBuildingsBuildingIdFloorsFloorIdProcessingRoute,
+  AdminBuildingsBuildingIdFloorsFloorIdUploadRoute:
+    AdminBuildingsBuildingIdFloorsFloorIdUploadRoute,
+  AdminBuildingsBuildingIdFloorsFloorIdIndexRoute:
+    AdminBuildingsBuildingIdFloorsFloorIdIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
