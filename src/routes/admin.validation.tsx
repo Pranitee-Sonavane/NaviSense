@@ -100,10 +100,13 @@ function Validation() {
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">{c.detail}</p>
               </div>
-              {c.level !== "pass" && c.fixTo && (
+              {c.level !== "pass" && c.fixTo?.floorId && (
                 <Button size="sm" variant="outline" asChild>
-                  <Link to={c.fixTo.to} params={c.fixTo.params as never}>
-                    Fix this
+                  <Link
+                    to="/admin/buildings/$buildingId/floors/$floorId/editor"
+                    params={{ buildingId, floorId: c.fixTo.floorId }}
+                  >
+                    {c.fixTo.hint}
                   </Link>
                 </Button>
               )}
