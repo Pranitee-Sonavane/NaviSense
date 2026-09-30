@@ -17,8 +17,13 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminPublishRouteImport } from './routes/admin.publish'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminValidationRouteImport } from './routes/admin.validation'
 import { Route as AdminBuildingsIndexRouteImport } from './routes/admin.buildings.index'
 import { Route as AdminBuildingsNewRouteImport } from './routes/admin.buildings.new'
+import { Route as AdminQrIndexRouteImport } from './routes/admin.qr.index'
+import { Route as AdminQrNewRouteImport } from './routes/admin.qr.new'
 import { Route as AdminBuildingsBuildingIdIndexRouteImport } from './routes/admin.buildings.$buildingId.index'
 import { Route as AdminBuildingsBuildingIdFloorsNewRouteImport } from './routes/admin.buildings.$buildingId.floors.new'
 import { Route as AdminBuildingsBuildingIdFloorsFloorIdIndexRouteImport } from './routes/admin.buildings.$buildingId.floors.$floorId.index'
@@ -68,6 +73,21 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPublishRoute = AdminPublishRouteImport.update({
+  id: '/publish',
+  path: '/publish',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminValidationRoute = AdminValidationRouteImport.update({
+  id: '/validation',
+  path: '/validation',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminBuildingsIndexRoute = AdminBuildingsIndexRouteImport.update({
   id: '/buildings/',
   path: '/buildings/',
@@ -76,6 +96,16 @@ const AdminBuildingsIndexRoute = AdminBuildingsIndexRouteImport.update({
 const AdminBuildingsNewRoute = AdminBuildingsNewRouteImport.update({
   id: '/buildings/new',
   path: '/buildings/new',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQrIndexRoute = AdminQrIndexRouteImport.update({
+  id: '/qr/',
+  path: '/qr/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminQrNewRoute = AdminQrNewRouteImport.update({
+  id: '/qr/new',
+  path: '/qr/new',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminBuildingsBuildingIdIndexRoute =
@@ -135,9 +165,14 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setup': typeof SetupRoute
+  '/admin/publish': typeof AdminPublishRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/validation': typeof AdminValidationRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/buildings/new': typeof AdminBuildingsNewRoute
+  '/admin/qr/new': typeof AdminQrNewRoute
   '/admin/buildings/': typeof AdminBuildingsIndexRoute
+  '/admin/qr/': typeof AdminQrIndexRoute
   '/admin/buildings/$buildingId/': typeof AdminBuildingsBuildingIdIndexRoute
   '/admin/buildings/$buildingId/floors/new': typeof AdminBuildingsBuildingIdFloorsNewRoute
   '/admin/buildings/$buildingId/floors/$floorId/editor': typeof AdminBuildingsBuildingIdFloorsFloorIdEditorRoute
@@ -154,9 +189,14 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setup': typeof SetupRoute
+  '/admin/publish': typeof AdminPublishRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/validation': typeof AdminValidationRoute
   '/admin': typeof AdminIndexRoute
   '/admin/buildings/new': typeof AdminBuildingsNewRoute
+  '/admin/qr/new': typeof AdminQrNewRoute
   '/admin/buildings': typeof AdminBuildingsIndexRoute
+  '/admin/qr': typeof AdminQrIndexRoute
   '/admin/buildings/$buildingId': typeof AdminBuildingsBuildingIdIndexRoute
   '/admin/buildings/$buildingId/floors/new': typeof AdminBuildingsBuildingIdFloorsNewRoute
   '/admin/buildings/$buildingId/floors/$floorId/editor': typeof AdminBuildingsBuildingIdFloorsFloorIdEditorRoute
@@ -175,9 +215,14 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/setup': typeof SetupRoute
+  '/admin/publish': typeof AdminPublishRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/validation': typeof AdminValidationRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/buildings/new': typeof AdminBuildingsNewRoute
+  '/admin/qr/new': typeof AdminQrNewRoute
   '/admin/buildings/': typeof AdminBuildingsIndexRoute
+  '/admin/qr/': typeof AdminQrIndexRoute
   '/admin/buildings/$buildingId/': typeof AdminBuildingsBuildingIdIndexRoute
   '/admin/buildings/$buildingId/floors/new': typeof AdminBuildingsBuildingIdFloorsNewRoute
   '/admin/buildings/$buildingId/floors/$floorId/editor': typeof AdminBuildingsBuildingIdFloorsFloorIdEditorRoute
@@ -197,9 +242,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setup'
+    | '/admin/publish'
+    | '/admin/settings'
+    | '/admin/validation'
     | '/admin/'
     | '/admin/buildings/new'
+    | '/admin/qr/new'
     | '/admin/buildings/'
+    | '/admin/qr/'
     | '/admin/buildings/$buildingId/'
     | '/admin/buildings/$buildingId/floors/new'
     | '/admin/buildings/$buildingId/floors/$floorId/editor'
@@ -216,9 +266,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setup'
+    | '/admin/publish'
+    | '/admin/settings'
+    | '/admin/validation'
     | '/admin'
     | '/admin/buildings/new'
+    | '/admin/qr/new'
     | '/admin/buildings'
+    | '/admin/qr'
     | '/admin/buildings/$buildingId'
     | '/admin/buildings/$buildingId/floors/new'
     | '/admin/buildings/$buildingId/floors/$floorId/editor'
@@ -236,9 +291,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/setup'
+    | '/admin/publish'
+    | '/admin/settings'
+    | '/admin/validation'
     | '/admin/'
     | '/admin/buildings/new'
+    | '/admin/qr/new'
     | '/admin/buildings/'
+    | '/admin/qr/'
     | '/admin/buildings/$buildingId/'
     | '/admin/buildings/$buildingId/floors/new'
     | '/admin/buildings/$buildingId/floors/$floorId/editor'
@@ -317,6 +377,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/publish': {
+      id: '/admin/publish'
+      path: '/publish'
+      fullPath: '/admin/publish'
+      preLoaderRoute: typeof AdminPublishRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/validation': {
+      id: '/admin/validation'
+      path: '/validation'
+      fullPath: '/admin/validation'
+      preLoaderRoute: typeof AdminValidationRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/buildings/': {
       id: '/admin/buildings/'
       path: '/buildings'
@@ -329,6 +410,20 @@ declare module '@tanstack/react-router' {
       path: '/buildings/new'
       fullPath: '/admin/buildings/new'
       preLoaderRoute: typeof AdminBuildingsNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/qr/': {
+      id: '/admin/qr/'
+      path: '/qr'
+      fullPath: '/admin/qr/'
+      preLoaderRoute: typeof AdminQrIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/qr/new': {
+      id: '/admin/qr/new'
+      path: '/qr/new'
+      fullPath: '/admin/qr/new'
+      preLoaderRoute: typeof AdminQrNewRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/buildings/$buildingId/': {
@@ -391,9 +486,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminPublishRoute: typeof AdminPublishRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminValidationRoute: typeof AdminValidationRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminBuildingsNewRoute: typeof AdminBuildingsNewRoute
+  AdminQrNewRoute: typeof AdminQrNewRoute
   AdminBuildingsIndexRoute: typeof AdminBuildingsIndexRoute
+  AdminQrIndexRoute: typeof AdminQrIndexRoute
   AdminBuildingsBuildingIdIndexRoute: typeof AdminBuildingsBuildingIdIndexRoute
   AdminBuildingsBuildingIdFloorsNewRoute: typeof AdminBuildingsBuildingIdFloorsNewRoute
   AdminBuildingsBuildingIdFloorsFloorIdEditorRoute: typeof AdminBuildingsBuildingIdFloorsFloorIdEditorRoute
@@ -405,9 +505,14 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminPublishRoute: AdminPublishRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminValidationRoute: AdminValidationRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminBuildingsNewRoute: AdminBuildingsNewRoute,
+  AdminQrNewRoute: AdminQrNewRoute,
   AdminBuildingsIndexRoute: AdminBuildingsIndexRoute,
+  AdminQrIndexRoute: AdminQrIndexRoute,
   AdminBuildingsBuildingIdIndexRoute: AdminBuildingsBuildingIdIndexRoute,
   AdminBuildingsBuildingIdFloorsNewRoute:
     AdminBuildingsBuildingIdFloorsNewRoute,
