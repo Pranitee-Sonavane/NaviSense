@@ -20,6 +20,8 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminPublishRouteImport } from './routes/admin.publish'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminValidationRouteImport } from './routes/admin.validation'
+import { Route as VIndexRouteImport } from './routes/v.index'
+import { Route as VQrIdRouteImport } from './routes/v.$qrId'
 import { Route as AdminBuildingsIndexRouteImport } from './routes/admin.buildings.index'
 import { Route as AdminBuildingsNewRouteImport } from './routes/admin.buildings.new'
 import { Route as AdminQrIndexRouteImport } from './routes/admin.qr.index'
@@ -87,6 +89,16 @@ const AdminValidationRoute = AdminValidationRouteImport.update({
   id: '/validation',
   path: '/validation',
   getParentRoute: () => AdminRoute,
+} as any)
+const VIndexRoute = VIndexRouteImport.update({
+  id: '/v/',
+  path: '/v/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VQrIdRoute = VQrIdRouteImport.update({
+  id: '/v/$qrId',
+  path: '/v/$qrId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminBuildingsIndexRoute = AdminBuildingsIndexRouteImport.update({
   id: '/buildings/',
@@ -168,7 +180,9 @@ export interface FileRoutesByFullPath {
   '/admin/publish': typeof AdminPublishRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/validation': typeof AdminValidationRoute
+  '/v/$qrId': typeof VQrIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/v/': typeof VIndexRoute
   '/admin/buildings/new': typeof AdminBuildingsNewRoute
   '/admin/qr/new': typeof AdminQrNewRoute
   '/admin/buildings/': typeof AdminBuildingsIndexRoute
@@ -192,7 +206,9 @@ export interface FileRoutesByTo {
   '/admin/publish': typeof AdminPublishRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/validation': typeof AdminValidationRoute
+  '/v/$qrId': typeof VQrIdRoute
   '/admin': typeof AdminIndexRoute
+  '/v': typeof VIndexRoute
   '/admin/buildings/new': typeof AdminBuildingsNewRoute
   '/admin/qr/new': typeof AdminQrNewRoute
   '/admin/buildings': typeof AdminBuildingsIndexRoute
@@ -218,7 +234,9 @@ export interface FileRoutesById {
   '/admin/publish': typeof AdminPublishRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/validation': typeof AdminValidationRoute
+  '/v/$qrId': typeof VQrIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/v/': typeof VIndexRoute
   '/admin/buildings/new': typeof AdminBuildingsNewRoute
   '/admin/qr/new': typeof AdminQrNewRoute
   '/admin/buildings/': typeof AdminBuildingsIndexRoute
@@ -245,7 +263,9 @@ export interface FileRouteTypes {
     | '/admin/publish'
     | '/admin/settings'
     | '/admin/validation'
+    | '/v/$qrId'
     | '/admin/'
+    | '/v/'
     | '/admin/buildings/new'
     | '/admin/qr/new'
     | '/admin/buildings/'
@@ -269,7 +289,9 @@ export interface FileRouteTypes {
     | '/admin/publish'
     | '/admin/settings'
     | '/admin/validation'
+    | '/v/$qrId'
     | '/admin'
+    | '/v'
     | '/admin/buildings/new'
     | '/admin/qr/new'
     | '/admin/buildings'
@@ -294,7 +316,9 @@ export interface FileRouteTypes {
     | '/admin/publish'
     | '/admin/settings'
     | '/admin/validation'
+    | '/v/$qrId'
     | '/admin/'
+    | '/v/'
     | '/admin/buildings/new'
     | '/admin/qr/new'
     | '/admin/buildings/'
@@ -317,6 +341,8 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SetupRoute: typeof SetupRoute
+  VQrIdRoute: typeof VQrIdRoute
+  VIndexRoute: typeof VIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -397,6 +423,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/validation'
       preLoaderRoute: typeof AdminValidationRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/v/': {
+      id: '/v/'
+      path: '/v'
+      fullPath: '/v/'
+      preLoaderRoute: typeof VIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v/$qrId': {
+      id: '/v/$qrId'
+      path: '/v/$qrId'
+      fullPath: '/v/$qrId'
+      preLoaderRoute: typeof VQrIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/buildings/': {
       id: '/admin/buildings/'
@@ -540,6 +580,8 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SetupRoute: SetupRoute,
+  VQrIdRoute: VQrIdRoute,
+  VIndexRoute: VIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
