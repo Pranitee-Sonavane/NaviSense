@@ -29,7 +29,7 @@ function BuildingsList() {
     return { floors: floors.length, rooms: data.rooms.filter((r) => ids.has(r.floorId)).length };
   };
 
-  const statusTone = (s: string) => (s === "published" ? "success" : s === "configuring" ? "warning" : "neutral") as const;
+  const statusTone = (s: string): "success" | "warning" | "neutral" => (s === "published" ? "success" : s === "configuring" ? "warning" : "neutral");
   const statusLabel = (s: string) => (s === "published" ? "Published" : s === "configuring" ? "Configuring" : "Draft");
 
   return (
