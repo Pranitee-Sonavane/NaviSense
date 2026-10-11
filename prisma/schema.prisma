@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  users     User[]
+  buildings Building[]
+  qrCodes   QrCode[]
+}
+
+model User {
+  id             String       @id @default(cuid())
+  name           String
+  email          String       @unique
+  passwordHash   String
+  role           String       @default("admin")
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Building {
+  id             String    @id @default(cuid())
+  name           String
+  address        String?
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  floors         Floor[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Floor {
+  id         String   @id @default(cuid())
+  name       String
+  level      Int
+  building   Building @relation(fields: [buildingId], references: [id])
+  buildingId String
+  rooms      Room[]
+  landmarks  Landmark[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Room {
+  id        String   @id @default(cuid())
+  name      String
+  code      String
+  floor     Floor    @relation(fields: [floorId], references: [id])
+  floorId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Landmark {
+  id        String   @id @default(cuid())
+  name      String
+  type      String
+  x         Float
+  y         Float
+  floor     Floor    @relation(fields: [floorId], references: [id])
+  floorId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QrCode {
+  id             String       @id @default(cuid())
+  code           String       @unique
+  targetUrl      String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginAdmin } from "@/lib/api";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -21,26 +22,43 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@northvalley.edu");
-  const [password, setPassword] = useState("navisense");
+  const [email, setEmail] = useState("admin@navisense.com");
+  const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    
     if (!email.includes("@") || password.length < 4) {
       setError("That email and password combination doesn't look right. Check and try again.");
       return;
     }
+    
     setBusy(true);
-    setTimeout(() => navigate({ to: "/admin" }), 700);
+    try {
+      const result = await loginAdmin(email, password);
+      
+      if (result.error) {
+        setError(result.error);
+        setBusy(false);
+        return;
+      }
+      
+      if (result.token) {
+        setTimeout(() => navigate({ to: "/admin" }), 700);
+      }
+    } catch (err) {
+      setError("An error occurred during login. Please try again.");
+      setBusy(false);
+    }
   };
 
   return (
     <AuthLayout
       title="Log in to NAVISENSE"
-      subtitle="Facility administrator portal · North Valley Institute"
+      subtitle="Facility administrator portal"
       footer={
         <>
           New organization?{" "}
@@ -86,7 +104,7 @@ function LoginPage() {
         </Button>
 
         <p className="text-center text-xs text-muted-foreground">
-          Prototype build — any valid-looking credentials will sign you in.
+          Connected to live backend · Database: Neon PostgreSQL
         </p>
       </form>
     </AuthLayout>
