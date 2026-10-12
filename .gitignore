@@ -32,3 +32,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local AI assistant configuration
+.agents/
+.claude/
+.cursor/
+.devin/
