@@ -1,13 +1,9 @@
 # NaviSense: QR-Enabled, Role-Aware Indoor Wayfinding with Graph-Based Route Planning
 
-**Manuscript type:** System design and experimental evaluation paper  
-**Draft status:** Results section populated from the supplied local benchmark reports; raw CSV/script verification and figure insertion remain before submission.  
 **Author(s):** [Author name(s)]  
 **Affiliation:** [Department, institution, city, country]  
 **Corresponding author:** [Email]  
 **Target template:** [Insert required IEEE / conference template and paper ID, if applicable]
-
-> **Important before submission.** The results section has been populated from the supplied local benchmark reports. Verify every value against the raw CSVs and benchmarked commit, generate and insert only figures supported by those files, and clarify the permission-test counting unit. Localization remains mocked and some administrative state is client/mock state; do not imply continuous positioning or production-grade authorization. Replace every remaining bracketed field before submission.
 
 ## Abstract
 
@@ -15,7 +11,6 @@ Indoor wayfinding is challenging in multi-floor buildings because satellite-base
 
 **Keywords—** indoor navigation, indoor wayfinding, QR code, graph algorithms, Dijkstra's algorithm, A* search, role-based access control, route planning, web application.
 
----
 
 ## I. Introduction
 
@@ -33,7 +28,6 @@ The shortest geometric route is not necessarily an authorized route. Restricted 
 
 This paper documents a QR-started indoor wayfinding architecture, defines a graph model that separates search cost from displayed distance, reports a controlled Dijkstra/A* benchmark, and evaluates role-aware destination and route restrictions using deterministic fixtures.
 
----
 
 ## II. Literature Survey and Related Work
 
@@ -49,7 +43,6 @@ Role-based access control associates permissions with roles [12]. For indoor nav
 
 Prior work provides foundations for indoor positioning, wayfinding, graph construction, shortest-path search, and access control. This paper evaluates their combination in a QR-started web prototype, focusing on measured graph-search behavior and functional role-aware route validity. It does not claim that a systematic review has established this combination as novel.
 
----
 
 ## III. Problem Definition
 
@@ -66,7 +59,6 @@ Here, P_{G_r}(s,t) is the set of permitted paths from s to t. If this set is emp
 
 The scope is software route planning and functional access-aware behavior. Continuous localization accuracy, usability, emergency-routing certification, and production security are outside the claims of this evaluation.
 
----
 
 ## IV. Proposed NaviSense System
 
@@ -137,7 +129,6 @@ sequenceDiagram
 
 **Figure 2 caption:** Intended interaction sequence. Production deployment requires trusted-server authorization; client-side filtering alone is insufficient.
 
----
 
 ## V. Mathematical Model and Route-Planning Algorithms
 
@@ -213,7 +204,6 @@ flowchart TD
 
 **Figure 3 caption:** Proposed route-planning flow. The A* branch is an experimental extension and should only be described as implemented after the code and tests confirm it.
 
----
 
 ## VI. Role-Based Destination Filtering and Restricted-Area Routing
 
@@ -248,7 +238,6 @@ flowchart LR
 
 **Figure 4 caption:** Role-aware routing searches the permitted subgraph and validates the final path. The diagram describes the target behavior; the measured functional results are reported in Section IX.
 
----
 
 ## VII. Implementation Details
 
@@ -258,7 +247,6 @@ The reported benchmark compares Dijkstra and A* using the same binary min-heap a
 
 For reproducibility, archive the exact source commit, operating system and hardware, runtime version, graph-generation scripts and seeds, graph/query definitions, algorithm and priority-queue versions, warm-up and trial counts, timing method, raw CSVs, and figure-generation commands.
 
----
 
 ## VIII. Experimental Setup and Evaluation Metrics
 
@@ -268,7 +256,6 @@ The independent variables are algorithm, graph topology and size, and query type
 
 Timed trials use the same graph and query for both algorithms. Route outputs are checked independently, and results are summarized with medians and interquartile ranges. The benchmark procedure, machine/runtime details, timing boundaries, and trial counts are reported alongside the results in Section IX to avoid duplicating those details here. No restriction-density sweep is claimed unless fixed queries have actually been tested across predeclared restriction levels.
 
----
 
 ## IX. Results and Analysis
 
@@ -413,17 +400,13 @@ Several limitations remain. QR scanning establishes an entry context but does no
 
 Future work should validate the graph on a surveyed building, calibrate the cost model, test accessible routes and dynamic closures, conduct a consent-based usability study, and move sensitive authorization to a trusted server. Threats to validity include synthetic topology (external validity), runtime and counter definitions (construct validity), execution-environment variation (internal validity), and the small scope of functional security tests (security validity).
 
----
 
 ## XI. Conclusion
 
 This paper presents NaviSense, a QR-started indoor wayfinding prototype using graph-based route planning and role-aware restrictions. Across 570 paired benchmark trials, route availability agreed in every trial, and independently recomputed costs matched in all 510 successful pairs. A* expanded fewer nodes in the six grid groups but showed higher median paired runtime across the reported groups. These findings apply only to the tested implementation and fixtures; they do not establish continuous localization, real-world usability, or production-grade access-control security. Before submission, verify the raw data, resolve the permission-test counting unit, and include the benchmarked source version and supporting scripts.
 
----
 
 ## XII. References
-
-> **Bibliographic check required:** The list below contains 15 candidate references in citation order. Before submission, verify every author list, title, volume, issue, page range, article number, and DOI against the publisher or DOI record. In particular, recheck the complete metadata for [14] and [15]. Do not submit a reference whose metadata has not been verified. IEEE-style numbering follows first citation order, not publication year.
 
 [1] W. Sakpere, M. Adeyeye-Oshin, and N. B. W. Mlitwa, “A State-of-the-Art Survey of Indoor Positioning and Navigation Systems and Technologies,” *South African Computer Journal*, vol. 29, no. 3, pp. 145–197, 2017, doi: 10.18489/sacj.v29i3.452.
 
