@@ -57,10 +57,10 @@ Represent the indoor environment as a weighted graph (G=(V,E,w)), where V contai
 
 For role r, let V_r and E_r be the permitted nodes and edges. The planner must return a path using only the permitted subgraph G_r = (V_r, E_r), or report that no permitted route exists.
 
-[
+\[
 P^* = \arg\min_{P\in\mathcal{P}_{G_r}(s,t)}
 \sum_{e\in P} w(e)
-]
+\]
 
 Here, P_{G_r}(s,t) is the set of permitted paths from s to t. If this set is empty, no authorized route exists.
 
@@ -221,11 +221,11 @@ flowchart TD
 
 For a role r, let D_r denote discoverable destinations, V_r permitted navigation nodes, and E_r permitted edges. A destination is selectable only if t ∈ D_r, and a route P is valid only if every node and edge in the path is permitted:
 
-[
+\[
 \forall v\in P,\; v\in V_r
 \qquad\text{and}\qquad
 \forall e\in P,\; e\in E_r
-]
+\]
 
 Destination visibility and traversal permissions are separate policies. A user may be allowed to use a public corridor without being allowed to discover every connected room.
 
