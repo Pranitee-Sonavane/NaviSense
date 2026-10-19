@@ -53,16 +53,16 @@ Prior work provides foundations for indoor positioning, wayfinding, graph constr
 
 ## III. Problem Definition
 
-Represent the indoor environment as a weighted graph (G=(V,E,w)), where (V) contains navigation nodes, (E) contains connections, and (w(e)geq 0) is the search cost of edge (e). The scanned QR marker supplies a start node (s), and the requested destination is (t).
+Represent the indoor environment as a weighted graph (G=(V,E,w)), where V contains navigation nodes, E contains connections, and each edge has a non-negative search cost w(e). The scanned QR marker supplies a start node s, and the requested destination is t.
 
-For role (r), let (V_r) and (E_r) be the permitted nodes and edges. The planner must return a path using only the permitted subgraph (G_r=(V_r,E_r)), or report that no permitted route exists.
+For role r, let V_r and E_r be the permitted nodes and edges. The planner must return a path using only the permitted subgraph G_r = (V_r, E_r), or report that no permitted route exists.
 
 [
 P^* = \arg\min_{P\in\mathcal{P}_{G_r}(s,t)}
 \sum_{e\in P} w(e)
 ]
 
-Here, (mathcal{P}_{G_r}(s,t)) is the set of permitted paths from (s) to (t). If this set is empty, no authorized route exists.
+Here, P_{G_r}(s,t) is the set of permitted paths from s to t. If this set is empty, no authorized route exists.
 
 The scope is software route planning and functional access-aware behavior. Continuous localization accuracy, usability, emergency-routing certification, and production security are outside the claims of this evaluation.
 
@@ -219,7 +219,7 @@ flowchart TD
 
 ### A. Permission model
 
-For a role (r), let (D_r) denote discoverable destinations, (V_r) permitted navigation nodes, and (E_r) permitted edges. A destination is selectable only if (t\in D_r), and a route (P) is valid only if every node and edge in the path is permitted:
+For a role r, let D_r denote discoverable destinations, V_r permitted navigation nodes, and E_r permitted edges. A destination is selectable only if t ∈ D_r, and a route P is valid only if every node and edge in the path is permitted:
 
 [
 \forall v\in P,\; v\in V_r
