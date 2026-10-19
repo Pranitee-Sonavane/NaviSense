@@ -1,17 +1,17 @@
 # NaviSense: QR-Enabled, Role-Aware Indoor Wayfinding with Graph-Based Route Planning
 
 **Manuscript type:** System design and experimental evaluation paper  
-**Draft status:** Copy-ready structure; empirical results must be filled only after running the stated experiments.  
+**Draft status:** Results section populated from the supplied local benchmark reports; raw CSV/script verification and figure insertion remain before submission.  
 **Author(s):** [Author name(s)]  
 **Affiliation:** [Department, institution, city, country]  
 **Corresponding author:** [Email]  
 **Target template:** [Insert required IEEE / conference template and paper ID, if applicable]
 
-> **Important before submission.** This is a research manuscript draft, not evidence that every proposed feature has already been implemented or experimentally validated. The current repository has a Dijkstra-style route search, a mocked localization module, and some client-side/mock administrative state. The charts in Section IX are therefore specified as reproducible plots to generate from measured results; no benchmark numbers have been fabricated. Keep the limitations and implementation-status statements accurate, and replace every bracketed field before submission.
+> **Important before submission.** The results section has been populated from the supplied local benchmark reports. Verify every value against the raw CSVs and benchmarked commit, generate and insert only figures supported by those files, and clarify the permission-test counting unit. Localization remains mocked and some administrative state is client/mock state; do not imply continuous positioning or production-grade authorization. Replace every remaining bracketed field before submission.
 
 ## Abstract
 
-Indoor wayfinding is challenging in multi-floor buildings because satellite-based positioning is often unavailable or unreliable indoors, while static floor maps do not necessarily provide route-specific, access-aware instructions. This paper presents NaviSense, a web-based indoor wayfinding prototype that uses QR codes to establish a building or location context and represents indoor circulation as a graph of navigation nodes and walkable connections. The system is designed to support destination search, floor-aware route presentation, and role-aware access rules for environments such as educational campuses, offices, hospitals, and public facilities. The paper describes the system architecture, graph model, shortest-path formulation, and a proposed evaluation that compares Dijkstra's algorithm with A* under controlled indoor-graph conditions. It also defines tests for destination visibility and restricted-edge traversability so that authorization is considered during route construction rather than only in the user interface. The current implementation provides a basis for this study, but its localization behavior is simulated and its route planner uses Dijkstra-style search; A* comparison and systematic access-control evaluation are proposed extensions that require implementation and measurement. The evaluation protocol reports route cost, displayed distance, runtime, expanded nodes, route availability, and authorization violations. This work contributes a reproducible evaluation plan for combining QR-started indoor wayfinding, graph-search analysis, and role-aware route constraints in a web application.
+Indoor wayfinding is challenging in multi-floor buildings because satellite-based positioning is often unreliable indoors and static maps do not provide route-specific guidance. This paper presents NaviSense, a QR-started indoor wayfinding prototype that models indoor circulation as a graph and investigates graph-search performance and role-aware route constraints. A controlled benchmark compared Dijkstra and A* over generated grid and graph-shape fixtures using 30 paired trials per query group. Route availability agreed in all 570 paired trials, and independently recomputed path costs matched in all 510 successful pairs. A* expanded fewer nodes in the six grid groups, but had higher median paired runtime in all reported grid and graph-shape groups. Deterministic permission fixtures reported no forbidden-edge traversals, although the tests do not establish production security because authorization remains prototype-level and client-side data may be exposed. Localization remains simulated, and the Engineering Block graph is mock data rather than a surveyed building. These results characterize the tested implementation and fixtures only; they do not establish real-world positioning accuracy, usability, or general algorithm superiority.
 
 **Keywords—** indoor navigation, indoor wayfinding, QR code, graph algorithms, Dijkstra's algorithm, A* search, role-based access control, route planning, web application.
 
@@ -48,7 +48,7 @@ The intended contributions are:
 
 ### C. Paper organization
 
-Section II reviews related work. Section III defines the problem and objectives. Section IV presents the system architecture. Section V formulates the graph and route-planning methods. Section VI discusses role-aware restrictions. Section VII records implementation details and current limitations. Section VIII specifies the experimental protocol and metrics. Section IX provides the results structure and graph-generation instructions. Section X discusses validity threats and limitations, Section XI concludes the paper, and Section XII lists the references.
+Section II reviews related work. Section III defines the problem and objectives. Section IV presents the system architecture. Section V formulates the graph and route-planning methods. Section VI discusses role-aware restrictions. Section VII records implementation details and current limitations. Section VIII specifies the experimental protocol and metrics. Section IX reports measured benchmark results and identifies plots supported by the available data. Section X discusses validity threats and limitations, Section XI concludes the paper, and Section XII lists the references.
 
 ---
 
@@ -74,7 +74,7 @@ These studies motivate explicit modeling of navigable connections instead of tre
 
 Dijkstra introduced a method for solving shortest-path problems in graphs with non-negative edge weights [10]. It is an appropriate baseline for route planning when the system requires a least-cost path and does not rely on a heuristic estimate of remaining cost. Hart, Nilsson, and Raphael formalized the A* search approach, which combines the cost already incurred with a heuristic estimate of the remaining cost [11]. A* can reduce exploration when a useful, admissible heuristic is available, while preserving optimality under the appropriate conditions. Its actual advantage depends on graph structure, heuristic quality, and implementation details; it should be measured rather than assumed.
 
-The current NaviSense route search is Dijkstra-style and uses repeated array sorting to select the next node, rather than a heap-based priority queue. Therefore, observed performance reflects both the algorithm and its data structure. A fair comparison should state whether Dijkstra and A* share the same priority-queue implementation and should report graph size and query characteristics. This paper proposes implementing A* as an experimental extension and comparing it against the existing baseline.
+The application and research benchmark should be distinguished. The reported benchmark compares Dijkstra and A* on identical graph/query inputs using the same binary min-heap and stale-entry handling. The results characterize that benchmark implementation and do not, by themselves, establish which algorithm is generally faster for indoor navigation.
 
 ### E. Role-based access control and restricted navigation
 
@@ -365,15 +365,15 @@ The following status table is deliberately conservative and should be rechecked 
 | Component | Current status known from repository review | Reporting guidance |
 |---|---|---|
 | Indoor route search | Dijkstra-style search exists | May be described as implemented, subject to current-branch verification |
-| Priority queue | Repeated array sorting is used in current routing code | Include this implementation detail in performance discussion |
-| A* search | Proposed experimental extension | Do not describe as implemented until added and tested |
+| Benchmark priority queue | Dijkstra and A* share a binary min-heap and stale-entry handling in the benchmark | State this when describing benchmark fairness; distinguish benchmark code from application defaults |
+| A* search | Implemented for the reported research benchmark | Describe only the benchmarked implementation and tested conditions |
 | Localization | Mocked/simulated module | Do not claim continuous or experimentally measured localization |
 | QR entry context | Used to establish entry/building context | Do not describe QR as continuous tracking |
 | Vertical transition cost | Fixed search penalty in current routing logic | State as an implementation parameter, not metres |
 | Displayed distance | Calculated separately from horizontal segments with a floor-plan scale | Explain that it is not necessarily equal to search cost |
-| Role-aware destination and edge restrictions | Target research requirement; verify actual end-to-end enforcement | Do not claim security enforcement without tests and server-side validation |
+| Role-aware destination and edge restrictions | Evaluated in deterministic prototype fixtures | Report functional fixture outcomes only; do not claim trusted server-side enforcement |
 | Administration / backend state | Some state is mock/client-side | Do not describe the prototype as production-secure |
-| Benchmarks | No measured benchmark results supplied in this draft | Populate only after running the experiment |
+| Benchmarks | Generated grid and graph-shape benchmarks plus deterministic permission fixtures are reported in Section IX | Keep raw CSVs, scripts, environment details, and final commit together |
 
 ### C. Reproducibility information
 
@@ -457,83 +457,139 @@ A performance result is valid only when the algorithms receive the same graph an
 
 ## IX. Results and Analysis
 
-**This section must remain incomplete until real measurements are collected.** The figures below are the required graph designs, not empirical results. Do not insert illustrative or randomly invented values into a submitted research paper.
+The results below are transcribed from the supplied local benchmark reports. The grid and graph-shape tests use generated fixtures; the Engineering Block graph is mock data, not a surveyed building. These are software benchmark results, not real-world navigation or user-study results.
 
 ### A. Correctness results
 
-Fill Table II after running the tests.
-
 **Table II. Route-planning correctness results**
 
-| Test group | Total cases | Passed | Failed | Notes |
-|---|---:|---:|---:|---|
-| Known shortest paths | [n] | [n] | [n] | [Reference implementation and test IDs] |
-| Same-floor routes | [n] | [n] | [n] | [Dataset/version] |
-| Cross-floor routes | [n] | [n] | [n] | [Vertical-transition handling] |
-| Unreachable destinations | [n] | [n] | [n] | Expected no-route behavior |
-| Restricted-edge routes | [n] | [n] | [n] | Forbidden-edge count |
-| Destination visibility | [n] | [n] | [n] | Role-specific outcomes |
+| Test group | Paired trials / cases | Result | Interpretation |
+|---|---:|---|---|
+| Grid graph route availability | 180 | 180/180 agreed | Algorithms agreed on route-found/no-route status |
+| Graph-shape route availability | 390 | 390/390 agreed | Algorithms matched expected reachable/unreachable status |
+| Successful grid path costs | 180 | 180/180 matched | Independently recomputed costs agreed |
+| Successful graph-shape path costs | 330 | 330/330 matched | Independently recomputed costs agreed |
+| All successful benchmark pairs | 510 | 510/510 matched | No path-cost disagreement observed |
+| Permission fixtures | See Table IV | No forbidden-edge traversals reported | Deterministic prototype tests only |
 
-### B. Performance results
+Across 570 paired benchmark trials (180 grid and 390 graph-shape), route availability agreed in every trial. All 510 successful paired routes had independently recomputed matching minimum costs. The remaining 60 pairs were unreachable cases, for which route-cost agreement is not applicable.
 
-**Table III. Summary of route-planning performance**
+**[INSERT FIGURE 8 HERE — Route-cost agreement, only if paired raw costs are available]**
 
-| Graph class | Algorithm | Nodes | Edges | Median runtime (ms) | IQR (ms) | Median expanded nodes | Median route cost |
-|---|---|---:|---:|---:|---:|---:|---:|
-| Small | Dijkstra | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| Small | A* | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| Medium | Dijkstra | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| Medium | A* | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| Large | Dijkstra | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| Large | A* | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+- Chart: scatter plot with Dijkstra route cost on the x-axis and A* route cost on the y-axis; add a reference line y=x.
+- Data: paired successful-query costs from routing-benchmarks.csv and graph-shape-benchmarks.csv.
+- Do not invent individual points from aggregate summaries. If paired raw costs are unavailable, omit this figure.
+- Caption: “Dijkstra and A* route costs for matched successful queries. Points on the equality line indicate matching route costs.”
 
-Report the number of graph instances, queries, and repetitions for each row. If graph classes vary greatly in topology, report the ranges or give results per dataset rather than aggregating incomparable graphs.
+### B. Performance results — grid graphs
 
-### C. Access-control results
+**Table III. Route-planning performance on generated grid graphs**
+
+Runtime values are median milliseconds with interquartile range (Q1–Q3). Paired change is the median of per-trial percentage changes, with its Q1–Q3 interval. Positive change means A* took longer.
+
+| Nodes | Query type | Dijkstra runtime, median [Q1, Q3] ms | A* runtime, median [Q1, Q3] ms | Paired runtime change, median [Q1, Q3] | Expanded nodes Dijkstra / A* |
+|---:|---|---:|---:|---:|---:|
+| 300 | Same floor | 0.8807 [0.7517, 1.0945] | 0.9830 [0.9002, 1.2964] | +11.3% [+0.2%, +28.1%] | 100 / 83 |
+| 300 | Cross floor | 1.0894 [1.0257, 1.3851] | 1.1673 [1.0437, 1.3799] | +3.4% [-6.4%, +12.1%] | 295 / 208 |
+| 1,200 | Same floor | 1.4127 [1.3318, 1.6127] | 2.0846 [1.9288, 2.3910] | +42.5% [+23.8%, +61.0%] | 400 / 363 |
+| 1,200 | Cross floor | 2.8198 [2.1476, 3.3207] | 3.2779 [2.6293, 3.9500] | +21.5% [-5.4%, +39.2%] | 1,195 / 885 |
+| 2,700 | Same floor | 3.2775 [3.1735, 3.9057] | 4.4150 [4.2530, 4.6389] | +31.7% [+13.2%, +46.3%] | 985 / 843 |
+| 2,700 | Cross floor | 5.4790 [4.9581, 6.2110] | 6.7552 [5.7309, 7.3924] | +20.6% [-0.4%, +43.0%] | 2,695 / 1,921 |
+
+**[INSERT FIGURE 5 HERE — Runtime by grid size]**
+
+- Chart: line chart with markers and Q1–Q3 error bars; separate panels for same-floor and cross-floor queries.
+- X-axis: node count (300, 1,200, 2,700). Y-axis: median runtime (ms). Series: Dijkstra and A*.
+- Data: routing-benchmarks.csv.
+- Caption: “Median routing runtime by grid size and query type; error bars show the interquartile range across 30 paired trials.”
+
+**[INSERT FIGURE 6 HERE — Expanded nodes by algorithm]**
+
+- Chart: line chart with markers; separate same-floor and cross-floor panels.
+- X-axis: node count. Y-axis: median expanded nodes. Series: Dijkstra and A*.
+- Data: routing-benchmarks.csv.
+- Caption: “Expanded nodes by graph size and query type. A* expanded fewer nodes in all six grid groups.”
+
+**Results interpretation:** Across the six grid groups, A* matched Dijkstra’s independently recomputed path cost in all 180 paired trials and expanded fewer nodes in each group. However, A* had a higher median paired runtime in every group, ranging from +3.4% to +42.5%. For the 2,700-node same-floor query, A* expanded 843 nodes compared with 985 for Dijkstra, but median runtime was 4.4150 ms compared with 3.2775 ms. Fewer expansions therefore did not translate into lower end-to-end runtime under these tested conditions. The paired runtime IQR includes zero in some groups, so these descriptive results alone do not establish statistical significance.
+
+### C. Performance results — graph shapes
+
+**Table V. Runtime across graph shapes and query types**
+
+Runtime values are median milliseconds. The paired-change interval is Q1–Q3 across paired per-trial percentage changes. Preserve the full runtime IQR, expanded-node counts, and examined-edge counts in the supplementary benchmark report.
+
+| Graph / query | Nodes | Dijkstra median (ms) | A* median (ms) | Paired runtime change, median [Q1, Q3] | Cost agreement |
+|---|---:|---:|---:|---:|---:|
+| Corridor tree — long | 160 | 0.7567 | 0.8649 | +14.3% [+2.7%, +42.0%] | 30/30 |
+| Corridor tree — short | 160 | 0.2812 | 0.3527 | +39.2% [-1.0%, +63.1%] | 30/30 |
+| Irregular floor plan — long | 120 | 0.5554 | 0.6253 | +12.1% [+8.1%, +20.6%] | 30/30 |
+| Irregular floor plan — short | 120 | 0.3304 | 0.4079 | +26.3% [+11.5%, +35.2%] | 30/30 |
+| Engineering Block mock — cross-floor | 61 | 0.2437 | 0.2994 | +11.1% [-7.6%, +31.5%] | 30/30 |
+| Engineering Block mock — long | 61 | 0.1436 | 0.1668 | +17.0% [+10.3%, +25.9%] | 30/30 |
+| Engineering Block mock — short | 61 | 0.1690 | 0.1902 | +18.0% [+11.5%, +30.8%] | 30/30 |
+| Engineering Block mock — unreachable | 61 | 0.0168 | 0.0169 | +1.8% [-6.9%, +23.7%] | N/A |
+| Obstacle-heavy — long | 324 | 1.3274 | 1.5212 | +17.2% [+6.2%, +30.7%] | 30/30 |
+| Obstacle-heavy — short | 324 | 0.6311 | 0.7611 | +20.4% [+14.2%, +36.0%] | 30/30 |
+| Sparse-disconnected — long | 60 | 0.0492 | 0.0654 | +31.1% [+20.6%, +37.4%] | 30/30 |
+| Sparse-disconnected — short | 60 | 0.0317 | 0.0482 | +43.3% [+31.9%, +67.7%] | 30/30 |
+| Sparse-disconnected — unreachable | 60 | 0.1155 | 0.1315 | +14.7% [+8.5%, +18.1%] | N/A |
+
+Across 390 paired graph-shape trials, route availability agreed with the expected result in every trial. All 330 successful pairs had matching independently recomputed path costs. Unreachable queries are excluded from path-cost agreement.
+
+**[INSERT FIGURE 7 HERE — Paired runtime change by graph shape]**
+
+- Chart: horizontal dot plot with horizontal Q1–Q3 error bars and a vertical reference line at 0%.
+- X-axis: median paired runtime change (%); positive values mean A* was slower. Y-axis: the 13 graph/query groups in Table V.
+- Data: graph-shape-benchmarks.csv.
+- Caption: “Median paired runtime change across graph-shape queries; error bars show the interquartile range of paired per-trial percentage changes.”
+
+**Results interpretation:** A* had a higher median paired runtime in all 13 graph-shape groups. It generally expanded fewer nodes in reachable queries, but the reduction varied by graph structure and route length. These results apply only to the generated fixtures and recorded runtime environment. The Engineering Block graph is mock data, not a surveyed building.
+
+### D. Role-aware destination and route tests
 
 **Table IV. Role-aware navigation outcomes**
 
-| Test | Expected | Observed | Pass/Fail | Evidence or test-log reference |
-|---|---|---|---|---|
-| Allowed destination visible | Yes | [ ] | [ ] | [ ] |
-| Restricted destination hidden/denied | Yes | [ ] | [ ] | [ ] |
-| Forbidden edge never used | Yes | [ ] | [ ] | [ ] |
-| No permitted path returns no-route | Yes | [ ] | [ ] | [ ] |
-| Policy change invalidates stale route | Yes | [ ] | [ ] | [ ] |
+| Scenario | Expected staff result | Expected visitor result | Reported outcome |
+|---|---|---|---|
+| Authorized alternative | Route available | Route available only if permitted | Scenario passed for tested roles and algorithms |
+| Missing floor transition | No route | No route | Expected no-route decision passed |
+| No permitted route | Route available | No permitted route | Expected role-specific decision passed |
+| Restricted destination | Route available | Denied / destination hidden | Destination absent from visitor-filtered results |
+| Restricted floor transition | Route available | No permitted route | Expected role-specific decision passed |
+| Restricted node | Route available | No permitted route | Expected role-specific decision passed |
 
-### D. Graphs and charts to generate
+The supplied permission summary reports zero unauthorized routes among 12 generated routes, 12/12 expected no-route decisions passed, 12/12 authorized-route checks passed, restricted-destination visibility of 0/2 algorithm-cases in the visitor-filtered result set, and zero forbidden-edge traversals.
 
-The repository contains a benchmark CSV template and plotting script. After collecting results, generate the following figures from the measured CSV data:
+**Counting clarification required before submission:** six scenarios × two roles × two algorithms could produce 24 algorithm-level evaluations. The phrase “12 generated routes” may count route-producing cases rather than all evaluations. Reconcile the denominator against permission-benchmarks.csv and the test harness. Do not present these as a single overall pass rate until the counting unit is explicit.
 
-- **Figure 5 — Runtime by graph size:** grouped bar chart or line chart comparing median Dijkstra and A* runtime for each graph class, with error bars or interquartile ranges.
-- **Figure 6 — Expanded nodes by algorithm:** grouped bar chart showing median expanded nodes by algorithm and graph class.
-- **Figure 7 — Runtime versus graph size:** line chart using actual node counts, with separate series for Dijkstra and A*. Use numeric x-axis values if graph sizes are numeric.
-- **Figure 8 — Route cost agreement:** scatter plot comparing Dijkstra route cost against A* route cost for identical queries. Add a reference line (y=x). Deviations require investigation.
-- **Figure 9 — Access-control correctness:** bar chart of pass rates for destination filtering and forbidden-edge avoidance, calculated from actual test counts.
-- **Figure 10 — Route availability versus restriction density:** line chart of the proportion of queries with a permitted route as restricted-edge fraction changes.
+**[INSERT FIGURE 9 HERE — Permission-test outcome counts, only if case-level data support it]**
 
-**Suggested chart interpretation rules:** Do not imply statistical significance from visual differences alone. State the sample count and uncertainty summary. Do not use a chart if there are insufficient observations to support it. For Figure 9, show counts as well as percentages if the number of test cases is small. Figure 10 should use a fixed set of source–destination queries across restriction levels so changes can be attributed to restrictions.
+- Chart: compact grouped bar chart of observed pass/fail counts by permission check, with sample counts displayed.
+- Data: permission-benchmarks.csv and the corresponding test output.
+- Only plot checks with explicit case-level outcomes. If only aggregate counts are available or the sample is too small, omit the chart and retain Table IV.
+- Caption: “Observed outcomes of deterministic role-aware routing fixtures. Counts describe prototype functional tests and are not a security audit.”
 
-### E. Results narrative template
+**Security qualification:** The deterministic fixtures showed expected application-level behavior for the tested destination, node, and edge restrictions. No forbidden-edge traversal or unauthorized route was reported in the supplied summary. These results do not establish production-grade access control: mock data may remain inspectable in the browser bundle, and client-side filtering is not a trusted security boundary. Server-side route authorization and direct-API security testing remain necessary.
 
-Replace the bracketed statements below with measured values and delete any sentence that the data do not support.
+### E. Proposed analysis not supported by the current measurements
 
-> On the [dataset name/version] graphs containing [range] nodes and [range] edges, Dijkstra achieved a median runtime of [value] ms, while A* achieved [value] ms. A* expanded [value] nodes at the median compared with [value] for Dijkstra. For [number] matched queries, the algorithms produced equal route costs in [number] cases; the remaining [number] cases were investigated for heuristic admissibility, edge-weight consistency, implementation defects, or tie-handling differences. Across [number] role-policy tests, [number] returned no unauthorized destinations and [number] returned no forbidden edges. These findings apply to the evaluated graphs and implementation configuration and should not be generalized beyond the tested conditions.
+Do not generate the previously proposed “route availability versus restriction density” Figure 10 from the current results. The supplied summary does not establish a controlled sweep across multiple restricted-edge-density levels using fixed queries. Run and record that additional experiment before including such a chart; do not substitute invented or unrelated data.
 
-### F. Result analysis questions
+### F. Experimental environment and timing procedure
 
-After populating the tables and plots, answer these questions explicitly:
+The benchmark report records Node v22.20.0 on Windows 10 x64 (build 10.0.26300), AMD Ryzen 7 5825U, 16 logical CPUs, and approximately 16.5 GB RAM. Five warm-up runs alternated algorithm order, followed by 30 measured paired trials with alternating order. Timing used performance.now() around the complete computeRoute() call, including per-call policy filtering, adjacency construction, and heuristic setup. Graph construction, independent path-cost validation, CSV writing, and logging were outside the timed region. No timing outliers were discarded.
 
-1. Did A* reduce expanded nodes? Was the reduction consistent across graph types?
-2. Did reduced node expansion translate into lower runtime, or did implementation overhead dominate?
-3. Did both algorithms always agree on optimal route cost?
-4. Did vertical-transition penalties produce routes that matched the intended user experience?
-5. Did increasing restricted-edge density reduce route availability, and were any route violations observed?
-6. Were all destination-visibility and traversal tests passed? If not, what failed and what was changed?
-7. Which limitations prevent generalization to real buildings or real users?
+Dijkstra and A* used the same binary min-heap and stale-entry handling in this benchmark. Expanded nodes count valid, non-stale open-set removals, including the goal when reached. Examined edges count directed adjacency entries scanned while expanding those nodes. Runtime includes setup costs, so fewer expanded nodes do not guarantee lower end-to-end runtime.
 
----
+### G. Route cost versus displayed distance
 
+The optimizer minimizes the implementation’s generalized routingCost, not validated physical walking distance. Horizontal walk-edge cost uses Euclidean floor-plan units, while a vertical edge uses a fixed penalty of 220. The displayed NaviRoute.distance separately sums horizontal walk segments, divides by 11 floor-plan units per metre, and rounds; it excludes the vertical penalty and physical vertical travel. Route-cost optimality and displayed distance are therefore different metrics and must not be reported interchangeably.
+
+### H. Reproducibility and files
+
+The supplied local evaluation refers to routing-benchmarks.csv, graph-shape-benchmarks.csv, and permission-benchmarks.csv, along with research-evaluation-report.md and benchmark-report.md. Include the raw CSVs, benchmark scripts, report-generation scripts, and figures in the research branch or a versioned supplementary archive before submission. Record the exact commit SHA used for the final benchmark.
+
+The local evaluation notes report 13 tests passing, TypeScript checking, focused linting, production build, benchmark scripts, summary scripts, and plot scripts completing. Re-run these commands on the final commit and retain their logs before claiming the results are reproducible from the published repository.
 ## X. Discussion, Limitations, and Threats to Validity
 
 ### A. Interpretation
@@ -569,9 +625,9 @@ Future work includes implementing and validating A*, selecting an admissible heu
 
 ## XI. Conclusion
 
-This paper describes NaviSense, a QR-started indoor wayfinding prototype that represents an indoor environment as a graph and computes routes through modeled connections. It places the current Dijkstra-style implementation in the context of indoor navigation, wayfinding, indoor graph construction, shortest-path search, and role-based access control. The paper also defines a reproducible evaluation plan for comparing Dijkstra with A*, validating route optimality, measuring computational effort, and testing destination visibility and restricted-edge avoidance.
+This paper describes NaviSense, a QR-started indoor wayfinding prototype that represents an indoor environment as a graph and computes routes through modeled connections. It places the current Dijkstra-style implementation in the context of indoor navigation, wayfinding, indoor graph construction, shortest-path search, and role-based access control. The paper reports controlled benchmark results for Dijkstra and A* on generated grid and graph-shape fixtures, together with deterministic tests of role-aware destination filtering and restricted-edge avoidance. Across 570 paired benchmark trials, route availability agreed in every trial, and path costs matched in all 510 successful pairs. A* expanded fewer nodes in each grid group but showed higher median paired runtime across the reported groups, illustrating that fewer expansions do not necessarily imply faster end-to-end execution.
 
-The present draft does not claim measured performance gains, validated continuous localization, or production-grade access-control security. Those claims depend on completing the proposed implementation, running the specified tests, and reporting raw measurements. With those steps completed and the reference metadata verified, the study can provide a transparent assessment of how QR-based entry context, graph-search behavior, and role-aware restrictions interact in an indoor navigation web application.
+These findings apply only to the tested implementation, generated fixtures, and recorded runtime environment. They do not establish validated continuous localization, real-building navigation quality, usability, or production-grade access-control security. Before submission, raw CSVs and scripts must be committed with the exact benchmarked source version, figure availability must be checked against raw data, and the permission-test denominator must be reconciled.
 
 ---
 
@@ -615,16 +671,16 @@ The present draft does not claim measured performance gains, validated continuou
 
 | Figure | Content | Evidence needed | Status in this draft |
 |---|---|---|---|
-| Fig. 1 | System architecture | Confirmed component diagram | Conceptual Mermaid source supplied |
-| Fig. 2 | User/request sequence | Confirmed interaction sequence | Conceptual Mermaid source supplied |
-| Fig. 3 | Route-planning flow | Current Dijkstra plus implemented A* | Proposed flow; revise to match final code |
-| Fig. 4 | Role-aware filtering | Tested destination and edge enforcement | Target design; validate implementation |
-| Fig. 5 | Runtime by graph size | Measured timing CSV | Generate after experiments |
-| Fig. 6 | Expanded nodes | Instrumented search counts | Generate after experiments |
-| Fig. 7 | Runtime versus nodes | Multiple graph sizes and repeated trials | Generate after experiments |
-| Fig. 8 | Route-cost agreement | Paired algorithm outputs | Generate after experiments |
-| Fig. 9 | Access-control pass rates | Functional test logs | Generate after tests |
-| Fig. 10 | Route availability versus restriction density | Fixed queries across restriction levels | Generate after experiments |
+| Fig. 1 | System architecture | Confirmed component diagram | Conceptual Mermaid source supplied in Section IV |
+| Fig. 2 | User/request sequence | Confirmed interaction sequence | Check against final implementation |
+| Fig. 3 | Route-planning flow | Final route-search implementation | Revise to match benchmarked code |
+| Fig. 4 | Role-aware filtering | Tested destination and edge enforcement | Schematic only; not a measured floor plan |
+| Fig. 5 | Runtime by grid size | routing-benchmarks.csv | Generate from measured medians and IQRs |
+| Fig. 6 | Expanded nodes by grid size | routing-benchmarks.csv | Generate from measured search counters |
+| Fig. 7 | Paired runtime change by graph shape | graph-shape-benchmarks.csv | Generate as horizontal dot plot with IQR bars |
+| Fig. 8 | Route-cost agreement | Paired per-query route costs | Generate only if raw paired costs are available; otherwise omit |
+| Fig. 9 | Permission-test outcomes | permission-benchmarks.csv and test logs | Generate only if case-level outcomes support a meaningful chart |
+| Fig. 10 | Route availability versus restriction density | Fixed queries swept across restriction levels | Not measured; do not include without a new experiment |
 
 ## Appendix B. Final pre-submission checklist
 
@@ -632,10 +688,11 @@ The present draft does not claim measured performance gains, validated continuou
 - [ ] Verify all 15 references against publisher records and correct [14] and [15] metadata.
 - [ ] Ensure every reference is cited in the text and citation numbers follow first appearance.
 - [ ] Recheck current code and update the implementation-status table.
-- [ ] Implement and test A* before presenting it as implemented.
-- [ ] Run correctness and role-policy tests; preserve logs.
-- [ ] Run benchmarks and populate all result tables with real measurements.
-- [ ] Generate charts from measured data; remove unused figure placeholders.
+- [x] Run the reported Dijkstra/A* correctness and graph-shape comparisons; re-run on the final commit before submission.
+- [x] Evaluate deterministic role-policy fixtures; clarify permission-test denominators and preserve logs.
+- [x] Populate results tables from the supplied benchmark reports; verify each value against raw CSV before submission.
+- [ ] Generate and insert Figures 5–7 from raw CSVs; generate Figures 8–9 only if required paired/case-level data are available.
+- [ ] Do not include Figure 10 unless a restriction-density sweep has actually been run.
 - [ ] Convert Mermaid diagrams into figures supported by the target template.
 - [ ] Report code commit, machine/runtime details, datasets, seeds, trial counts, and scripts.
 - [ ] Remove all remaining square-bracket placeholders.
